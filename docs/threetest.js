@@ -31,7 +31,7 @@ document.getElementById('stage').appendChild(renderer.domElement);
 
 //camera
 camera = new THREE.PerspectiveCamera(45, width / height,1,10000);
-camera.position.set(1500,0,0);
+camera.position.set(3000,0,0);
 camera.lookAt(scene.position);
 //controlを追加し、マウスによるカメラコントロールを追加
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -59,7 +59,7 @@ scene.add(ambient);
 renderer.shadowMapEnabled = true; 
 
 // fog
-scene.fog = new THREE.FogExp2(0x0A0A0A, 0.0006);
+scene.fog = new THREE.FogExp2(0x0A0A0A, 0.0002);
 
 //mesh 物体
 // - geometry 形状
@@ -89,103 +89,6 @@ frame.mesh.position.set(0,0,0);
 frame.mesh.castShadow = true;
 //object.add(frame.mesh);
 
-
-var plate_num = 1;
-var p= new Array(plate_num);
-for(i=0;i<plate_num;i++){
-	//object生成
-	p[i] = {};
-	p[i].object= new THREE.Object3D();
-	p[i].height=500;
-	p[i].width =600;
-	p[i].plate = new THREE.Object3D();
-
-	//canvas
-	p[i].canvas = document.createElement('canvas');
-	p[i].canvas.width = 600; 
-	p[i].canvas.height =500;
-	var ctx = p[i].canvas.getContext('2d');
-	ctx.fillStyle = '#FFFFFF';
-	ctx.textAlign = 'center';
-	ctx.textBaseline = 'middle';
-	ctx.font = "150px sans-serif";
-	ctx.fillText("ne-03",p[i].width/2,p[i].height/2);
-	ctx.font = "30px sans-serif";
-
-	//texture
-	p[i].texture = new THREE.Texture(p[i].canvas);
-	p[i].texture.needsUpdate = true;
-
-	p[i].x = 0;
-	p[i].y = 0;
-	p[i].z = 0;
-	p[i].mesh = new THREE.Mesh(
-		new THREE.PlaneBufferGeometry(p[i].width,p[i].height),
-		new THREE.MeshPhongMaterial({
-			//color: 0x00FFFF ,
-			color: 0x00FFFF ,
-			transparent:true,
-			map: p[i].texture,
-			opacity:0.9999,
-			side:THREE.DoubleSide,
-		})
-	);
-	p[i].mesh.rotation.y = 90 * Math.PI / 180;
-
-	p[i].back = new THREE.Mesh(
-		new THREE.PlaneBufferGeometry(p[i].width,p[i].height),
-		new THREE.MeshPhongMaterial({
-			//color: 0x00FFFF ,
-			color: 0x0066FF ,
-			transparent:true,
-			opacity:0.2,
-			side:THREE.DoubleSide,
-		})
-	);
-	p[i].back.rotation.y = 90 * Math.PI / 180;
-
-	p[i].frame_material = new THREE.LineBasicMaterial( { 
-		linewidth: 1,
-		transparent:true,
-		opacity:0.5,
-		color: 0x00FFFF 
-	} );
-    p[i].frame_geometry = new THREE.Geometry();
-    p[i].frame_geometry.vertices.push(new THREE.Vector3(0, p[i].height/2, p[i].width/2));
-    p[i].frame_geometry.vertices.push(new THREE.Vector3(0, p[i].height/2,-p[i].width/2));
-    p[i].frame_geometry.vertices.push(new THREE.Vector3(0,-p[i].height/2,-p[i].width/2));
-    p[i].frame_geometry.vertices.push(new THREE.Vector3(0,-p[i].height/2, p[i].width/2));
-    p[i].frame_geometry.vertices.push(new THREE.Vector3(0, p[i].height/2, p[i].width/2));
-	p[i].frame_mesh = new THREE.Line( p[i].frame_geometry, p[i].frame_material );
-
-	p[i].move_start = 0;
-
-	p[i].plate.add(p[i].mesh);
-	p[i].plate.add(p[i].back);
-	p[i].plate.add(p[i].frame_mesh);
-	p[i].object.add(p[i].plate);
-
-	//object.add(p[i].object);
-}
-
-var disk_num = 3;
-var d= new Array(disk_num);
-for(i=0;i<disk_num;i++){
-	d[i] = {};
-	d[i].object= new THREE.Object3D();
-	
-	//半径、輪の幅、輪の分割、円の分割、弧の角。
-	d[i].frame_geometry = new THREE.TorusGeometry( 1, 0.001, 20, 128, Math.PI * 2);
-	d[i].frame_material = new THREE.MeshPhongMaterial({ color: 0xFF8800, wireframe:false });
-	d[i].frame_mesh = new THREE.Line( d[i].frame_geometry, d[i].frame_material );
-	d[i].frame_mesh.rotation.y = 90 * Math.PI / 180;
-
-
-	d[i].object.add(d[i].frame_mesh);
-
-	object.add(d[i].object);
-}
-
 var line_num = 36;
 var l= new Array(line_num);
 for(i=0;i<line_num;i++){
@@ -193,7 +96,7 @@ for(i=0;i<line_num;i++){
 	l[i].object= new THREE.Object3D();
 
 	l[i].frame_material = new THREE.LineBasicMaterial( { 
-		linewidth: 1,
+		linewidth: 2,
 		transparent:true,
 		opacity:1.0,
 		color: 0x66FF66 
