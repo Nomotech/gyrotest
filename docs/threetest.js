@@ -189,7 +189,7 @@ window.addEventListener('deviceorientation', function(e) {
     let gamma = dir * e.gamma;
     if (alpha) {
 	 		//object.rotation.x = alpha * Math.PI / 180;
-	 		object.rotation.z = beta * Math.PI / 180;
+	 		object.rotation.z = (beta + 30) * Math.PI / 180;
 	 		object.rotation.y = gamma * Math.PI / 180;
  		}
 
